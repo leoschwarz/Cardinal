@@ -3,7 +3,7 @@
 ## ----------------------
 
 readImzML <- function(name, folder = getwd(), attach.only = TRUE,
-	mass.range = NULL, resolution = NA, units = c("ppm", "mz"),
+	mass.range = NULL, resolution = NA, units = c("ppm", "mz", "original"),
 	guess.max = 1000L, as = "MSImagingExperiment", parse.only=FALSE,
 	BPPARAM = getCardinalBPPARAM(), ...)
 {
@@ -91,12 +91,17 @@ readImzML <- function(name, folder = getwd(), attach.only = TRUE,
 				to=ceiling(mzmax),
 				ppm=resolution / 2) # seq.ppm == half-bin-widths
 			tol <- c(relative = resolution * 1e-6)
-		} else {
+		} else if (units == "mz") {
 			mzout <- seq(
 				from=floor(mzmin),
 				to=ceiling(mzmax),
 				by=resolution)  # seq == full-bin-widths
 			tol <- c(absolute = resolution)
+		} else if (units == "original") {
+		  mzout <- sort(unique(unlist(as.list(unname(pmz)))))
+		  tol <- 1e-7
+		} else {
+			.stop("invalid units")
 		}
 		if ( representation == "centroid spectrum" )
 		{
