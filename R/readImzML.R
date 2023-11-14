@@ -98,8 +98,8 @@ readImzML <- function(name, folder = getwd(), attach.only = TRUE,
 				by=resolution)  # seq == full-bin-widths
 			tol <- c(absolute = resolution)
 		} else if (units == "original") {
-		  mzout <- sort(unique(unlist(as.list(unname(pmz)))))
-		  tol <- 1e-7
+			mzout <- sort(unique(unlist(as.list(unname(pmz)))))
+			tol <- 0
 		} else {
 			.stop("invalid units")
 		}
