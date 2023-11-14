@@ -111,9 +111,11 @@ readImzML <- function(name, folder = getwd(), attach.only = TRUE,
 			} else {
 				index <- seq_along(pmz)
 			}
-			peaks <- matter::binpeaks(pmz[index], domain=mzout)
-			.message("number of binned peaks: ", length(peaks))
-			mzout <- as.numeric(peaks)
+			if ( units != "original" ) {
+				peaks <- matter::binpeaks(pmz[index], domain=mzout)
+				.message("number of binned peaks: ", length(peaks))
+				mzout <- as.numeric(peaks)
+			}
 		}
 		spectra <- sparse_mat(index=pmz, data=pintensity,
 			domain=mzout, nrow=length(mzout), ncol=length(pintensity),
