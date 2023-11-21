@@ -103,19 +103,17 @@ readImzML <- function(name, folder = getwd(), attach.only = TRUE,
 		} else {
 			.stop("invalid units")
 		}
-		if ( "centroid spectrum" %in% representation)
+		if ( "centroid spectrum" %in% representation && units != "original" )
 		{
-			if ( units != "original" ) {
-				.message("binning centroided peaks...")
-				if ( is.finite(guess.max) ) {
-					index <- floor(seq(from=1L, to=length(pmz), length.out=guess.max))
-				} else {
-					index <- seq_along(pmz)
-				}
-				peaks <- matter::binpeaks(pmz[index], domain=mzout)
-				.message("number of binned peaks: ", length(peaks))
-				mzout <- as.numeric(peaks)
+			.message("binning centroided peaks...")
+			if ( is.finite(guess.max) ) {
+				index <- floor(seq(from=1L, to=length(pmz), length.out=guess.max))
+			} else {
+				index <- seq_along(pmz)
 			}
+			peaks <- matter::binpeaks(pmz[index], domain=mzout)
+			.message("number of binned peaks: ", length(peaks))
+			mzout <- as.numeric(peaks)
 		}
 		spectra <- sparse_mat(index=pmz, data=pintensity,
 			domain=mzout, nrow=length(mzout), ncol=length(pintensity),
