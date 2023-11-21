@@ -103,7 +103,7 @@ readImzML <- function(name, folder = getwd(), attach.only = TRUE,
 		} else {
 			.stop("invalid units")
 		}
-		if ( representation == "centroid spectrum" )
+		if ( "centroid spectrum" %in% representation)
 		{
 			if ( units != "original" ) {
 				.message("binning centroided peaks...")
